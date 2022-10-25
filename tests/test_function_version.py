@@ -1,5 +1,12 @@
 from io import StringIO
-from function_version import create_board
+from function_version import STATE_COLORS, create_board
+
+
+def test_const():
+    assert STATE_COLORS[0] == "🟩"
+    assert STATE_COLORS[1] == "🟡"
+    assert STATE_COLORS[2] == "🔵"
+    assert STATE_COLORS[3] == "🟫"
 
 
 def test_create_board():

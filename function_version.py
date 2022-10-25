@@ -1,3 +1,16 @@
+
+EMPTY = 0
+LIGHT = 1
+DARK = 2
+AVAILABLE = 3
+STATE_COLORS = {
+    EMPTY: "🟩",
+    LIGHT: "🟡",
+    DARK: "🔵",
+    AVAILABLE: "🟫",
+}
+
+
 def create_board():
     """Create initial board."""
     board = []
