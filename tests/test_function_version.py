@@ -1,12 +1,12 @@
 from io import StringIO
-from function_version import STATE_COLORS, EMPTY, LIGHT, DARK, create_board, display_board
+from function_version import STATE_COLORS, EMPTY, LIGHT, DARK, AVAILABLE, create_board, display_board, get_surrounding_cells
 
 
 def test_const():
     assert STATE_COLORS[EMPTY] == "🟩"
     assert STATE_COLORS[LIGHT] == "🟡"
     assert STATE_COLORS[DARK] == "🔵"
-    assert STATE_COLORS[3] == "🟫"
+    assert STATE_COLORS[AVAILABLE] == "🟫"
 
 
 def test_create_board():
@@ -35,3 +35,20 @@ def test_display_board(capfd):
     assert STATE_COLORS[LIGHT] in out
     # there is a blue cell
     assert STATE_COLORS[DARK] in out
+
+
+def test_get_surrounding_cells():
+    board = create_board()
+    # verify surrounding cells
+    r0c0_srrounging_cells = get_surrounding_cells(board, board[0][0])
+    r0c1_srrounging_cells = get_surrounding_cells(board, board[0][1])
+    r7c7_srrounging_cells = get_surrounding_cells(board, board[7][7])
+    r3c3_srrounging_cells = get_surrounding_cells(board, board[3][3])
+    # number of cells around the top-left-most cell
+    assert len(r0c0_srrounging_cells) == 3
+    # number of cells around the cell one right from the top left
+    assert len(r0c1_srrounging_cells) == 5
+    # number of cells around the bottom right-most cell
+    assert len(r7c7_srrounging_cells) == 3
+    # number of cells around the cell per center
+    assert len(r3c3_srrounging_cells) == 8
