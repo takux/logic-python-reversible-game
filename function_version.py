@@ -47,3 +47,17 @@ def display_board(board):
 
 board = create_board()
 display_board(board)
+
+board = create_board()
+
+r = 1
+c = 1
+print(board[r][c])
+
+start_r = r - 1
+start_c = c - 1
+print(board[start_r][start_c])
+
+end_r = r + 1
+end_c = c + 1
+print(board[end_r][end_c])
