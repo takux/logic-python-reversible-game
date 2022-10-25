@@ -1,3 +1,7 @@
+import pandas as pd
+
+# for .py file
+display = print
 
 EMPTY = 0
 LIGHT = 1
@@ -30,4 +34,16 @@ def create_board():
     return board
 
 
-initial_board = create_board()
+def display_board(board):
+    """Display boards using Pandas."""
+    df = pd.DataFrame(board)
+    df = df.applymap(lambda v: v["state"])
+    df = df.replace(EMPTY, STATE_COLORS[EMPTY])
+    df = df.replace(LIGHT, STATE_COLORS[LIGHT])
+    df = df.replace(DARK, STATE_COLORS[DARK])
+    df = df.replace(AVAILABLE, STATE_COLORS[AVAILABLE])
+    display(df)
+
+
+board = create_board()
+display_board(board)
