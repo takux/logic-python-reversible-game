@@ -45,23 +45,23 @@ def display_board(board):
     display(df)
 
 
-board = create_board()
-display_board(board)
+def get_surrounding_cells(board, base_cell):
+    """Get the surrounding cells from the base cell."""
+    start_r = base_cell["r"] - 1
+    start_c = base_cell["c"] - 1
+    end_r = base_cell["r"] + 1
+    end_c = base_cell["c"] + 1
+    surrounding_cells = []
+    for r in range(start_r, end_r+1):
+        for c in range(start_c, end_c+1):
+            if not (-1 < r < 8) or not (-1 < c < 8):
+                continue
+            if r == base_cell["r"] and c == base_cell["c"]:
+                continue
+            surrounding_cells.append(board[r][c])
+    return surrounding_cells
+
 
 board = create_board()
-
-base_cell = board[1][1]
-print(base_cell)
-
-start_r = base_cell["r"] - 1
-start_c = base_cell["c"] - 1
-print(board[start_r][start_c])
-
-end_r = base_cell["r"] + 1
-end_c = base_cell["c"] + 1
-print(board[end_r][end_c])
-
-for r in range(start_r, end_r+1):
-    # print(r)
-    for c in range(start_c, end_c+1):
-        print(c)
+base_cell = board[7][7]
+get_surrounding_cells(board, base_cell)
