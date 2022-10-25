@@ -1,8 +1,8 @@
 # [[0, 0, 0, 0, 0, 0, 0, 0],
 #  [0, 0, 0, 0, 0, 0, 0, 0],
 #  [0, 0, 0, 0, 0, 0, 0, 0],
-#  [0, 0, 0, 0, 0, 0, 0, 0],
-#  [0, 0, 0, 0, 0, 0, 0, 0],
+#  [0, 0, 0, 1, 2, 0, 0, 0],
+#  [0, 0, 0, 2, 1, 0, 0, 0],
 #  [0, 0, 0, 0, 0, 0, 0, 0],
 #  [0, 0, 0, 0, 0, 0, 0, 0],
 #  [0, 0, 0, 0, 0, 0, 0, 0]]
@@ -18,8 +18,18 @@ for r in range(8):
 
     # 8 columns
     for c in range(8):
-        board[r].append(0)
 
-# cell
+        # cell
+        if r == 3 and c == 3:
+            board[r].append(1)
+        elif r == 3 and c == 4:
+            board[r].append(2)
+        elif r == 4 and c == 3:
+            board[r].append(2)
+        elif r == 4 and c == 4:
+            board[r].append(1)
+        else:
+            board[r].append(0)
+
 
 board
