@@ -1,3 +1,4 @@
+from curses.ascii import EM
 from io import StringIO
 from function_version import *
 
@@ -90,3 +91,38 @@ def test_get_reversible_cells_in_one_dir():
     # All colors are opposite to the current color
     for reversiable_cell in reversiable_cells_in_one_dir:
         assert reversiable_cell["state"] == next_turn
+
+
+def test_get_reversible_cells():
+    #   🟡  🟡  🟡  🟡  🟡  🟡  🟡  🟡
+    #   🟡  🔵  🔵  🔵  🟡  🟡  🟡  🟡
+    #   🟡  🔵  🟩  🔵  🔵  🟡  🟡  🟡
+    #   🟡  🔵  🟡  🔵  🟡  🟡  🟡  🟡
+    #   🟡  🟡  🟡  🟡  🔵  🟡  🟡  🟡
+    #   🟡  🟡  🟡  🟡  🟡  🟡  🟡  🟡
+    #   🟡  🟡  🟡  🟡  🟡  🟡  🟡  🟡
+    #   🟡  🟡  🟡  🟡  🟡  🟡  🟡  🔵
+    # Check that the reversible_cells are correctly obtained when yellow is placed in the green cell in [2][2] in this state.
+    board = create_board()
+    for row in board:
+        for cell in row:
+            cell["state"] = LIGHT
+    board[1][1]["state"] = DARK
+    board[1][2]["state"] = DARK
+    board[1][3]["state"] = DARK
+
+    board[2][1]["state"] = DARK
+    board[2][2]["state"] = EMPTY
+    board[2][3]["state"] = DARK
+    board[2][4]["state"] = DARK
+
+    board[3][1]["state"] = DARK
+    board[3][3]["state"] = DARK
+
+    board[4][4]["state"] = DARK
+
+    board[7][7]["state"] = DARK
+
+    reversiable_cells = get_reversible_cells(board, board[2][2], LIGHT)
+    # Number of reversible cells
+    assert len(reversiable_cells) == 9
