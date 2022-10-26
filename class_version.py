@@ -36,12 +36,6 @@ class Direction():
         self.c_dir = target_cell.c - base_cell.c
 
 
-base_cell = Cell(0, 0)
-target_cell = Cell(0, 1)
-dirs = Direction(base_cell, target_cell)
-dirs.c_dir
-
-
 class Board():
     def __init__(self):
         self.board = self.create_board()
@@ -75,27 +69,6 @@ class Board():
         display(df)
 
 
-b = Board()
-b.display_board()
-
-
-# def create_game_manager():
-#     """Create a game manager object."""
-#     return {
-#         "turn": 1,
-#         "current_turn": LIGHT,
-#         "is_game_over": False,
-#         "is_passed": False,
-#         "is_passed_previous": False,
-#         "count_state": [0, 0, 0, 0],  # EMPTY, LIGHT, DARK, AVAILABLE
-#         "players": {
-#             1: {"name": "A", "is_random": True},
-#             2: {"name": "B", "is_random": True},
-#         }
-#     }
-
-# GameManager class
-
 class GameManager(Board):
     def __init__(self):
         super().__init__()
@@ -110,9 +83,6 @@ class GameManager(Board):
             DARK: Player("B"),
         }
 
-    # ["r"] => .r
-    # ["c"] => .c
-    # get_surrounding_cells
     def get_surrounding_cells(self, base_cell):
         """Get the surrounding cells from the base cell."""
         start_r = base_cell.r - 1
@@ -129,7 +99,6 @@ class GameManager(Board):
                 surrounding_cells.append(self.board[r][c])
         return surrounding_cells
 
-    # get_reversible_cells_in_one_dir
     def get_reversible_cells_in_one_dir(self, base_cell, dirs):
         """Get all reversible cells in one direction."""
         reversible_cells_in_one_dir = []
@@ -140,7 +109,7 @@ class GameManager(Board):
             next_c += dirs.c_dir
             if not (-1 < next_r < 8) or not (-1 < next_c < 8):
                 break
-            if self.board[next_r][next_c].state == EMPTY or board[next_r][next_c].state == AVAILABLE:
+            if self.board[next_r][next_c].state == EMPTY or self.board[next_r][next_c].state == AVAILABLE:
                 break
             if self.board[next_r][next_c].state == self.current_turn:
                 reversible_cells_in_one_dir.append(self.board[next_r][next_c])
@@ -155,8 +124,6 @@ class GameManager(Board):
                 reversible_cells_in_one_dir.clear()
         return reversible_cells_in_one_dir
 
-    # get_reversible_cells
-
     def get_reversible_cells(self, base_cell):
         """Get all reversible cells in all directions."""
         reversible_cells = []
@@ -168,7 +135,6 @@ class GameManager(Board):
             reversible_cells.extend(reversible_cells_in_one_dir)
         return reversible_cells
 
-    # refresh_board
     def refresh_board(self):
         """Refresh board."""
         self.count_state = [0, 0, 0, 0]
@@ -186,8 +152,6 @@ class GameManager(Board):
                     self.is_passed = False
                 self.count_state[self.board[r][c].state] += 1
 
-    # manual_selection
-
     def manual_selection(self):
         """Converts user input to integer indices."""
         while True:
@@ -199,7 +163,6 @@ class GameManager(Board):
             if self.board[r][c].state == AVAILABLE:
                 return r, c
 
-    # automatic_selection
     def automatic_selection(self):
         """Selects a cell automatically."""
         while True:
@@ -208,7 +171,6 @@ class GameManager(Board):
             if self.board[r][c].state == AVAILABLE:
                 return r, c
 
-    # play_game
     def play_game(self):
         """Run the game with all codes."""
         self.players[LIGHT].is_random = True
@@ -269,7 +231,3 @@ class GameManager(Board):
             print(f'\n WINNER: {STATE_COLORS[DARK]}')
         else:
             print('\n DRAW')
-
-
-gm = GameManager()
-gm.display_board()
