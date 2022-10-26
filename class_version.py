@@ -16,6 +16,12 @@ STATE_COLORS = {
 }
 
 
+class Player():
+    def __init__(self, name, is_random=True):
+        self.name = name
+        self.is_random = is_random
+
+
 def create_board():
     """Create initial board."""
     board = []
