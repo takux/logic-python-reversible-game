@@ -169,89 +169,65 @@ def automatic_selection(board):
         c = random.randint(0, 7)
         if board[r][c]["state"] == AVAILABLE:
             return r, c
-# play_game
 
 
-############################
-# 初期化
-gm = create_game_manager()
-gm["players"][1]["is_random"] = True
-gm["players"][2]["is_random"] = True
-board = create_board()
+def play_game():
+    """Run the game with all codes."""
+    gm = create_game_manager()
+    gm["players"][1]["is_random"] = True
+    gm["players"][2]["is_random"] = True
+    board = create_board()
 
-while True:
-    ############################
-    # ターンごとの初期化
-    gm["is_passed_previous"] = gm["is_passed"]
-    gm["is_passed"] = False
-    # 現在のターンを設定
-    if gm["turn"] % 2 == 0:
-        # 偶数
-        gm["current_turn"] = DARK
-    else:
-        # 奇数
-        gm["current_turn"] = LIGHT
-
-    ############################
-    # 表示
-    refresh_board(board, gm)
-
-    print("""\
------------------------------------
-{} TURN {} [{}　: {} {}　: {}] 
------------------------------------""".format(
-        STATE_COLORS[gm["current_turn"]],
-        gm["turn"],
-        STATE_COLORS[LIGHT],
-        gm["count_state"][LIGHT],
-        STATE_COLORS[DARK],
-        gm["count_state"][DARK],
-    ))
-
-    display_board(board)
-
-    ############################
-    # 終了チェック（つまりis_passed = Trueの場合のみチェック）
-    if gm["is_passed"]:
-
-        if gm["count_state"][LIGHT] + gm["count_state"][DARK] >= 64:
-            # LIGHTとDARKのセルの合計数が64以上かどうか
-            gm["is_game_over"] = True
-            print('\n 合計数が64になったので終了します。')
-            break
-        elif gm["is_passed_previous"]:
-            # 前回もパスしていればゲーム終了（2回連続パス）
-            gm["is_game_over"] = True
-            print('\n 2回連続でパスなので終了します。')
-            break
+    while True:
+        gm["is_passed_previous"] = gm["is_passed"]
+        gm["is_passed"] = False
+        if gm["turn"] % 2 == 0:
+            gm["current_turn"] = DARK
         else:
-            # 前回は置けていたら、ターンをパスして次のターンへ
-            print('\n 置ける場所がないのでパスします。')
-            gm["turn"] += 1
-            continue
+            gm["current_turn"] = LIGHT
 
-    ############################
-    # セルの選択
+        refresh_board(board, gm)
+        print("""\
+    -----------------------------------
+    {} TURN {} [{}　: {} {}　: {}] 
+    -----------------------------------""".format(
+            STATE_COLORS[gm["current_turn"]],
+            gm["turn"],
+            STATE_COLORS[LIGHT],
+            gm["count_state"][LIGHT],
+            STATE_COLORS[DARK],
+            gm["count_state"][DARK],
+        ))
+        display_board(board)
 
-    # 現在のターンプレイヤーがランダムかどうか判定
-    if gm["players"][gm["current_turn"]]["is_random"]:
-        # ランダムなら自動で選択
-        selected_r, selected_c = automatic_selection(board)
+        if gm["is_passed"]:
+            if gm["count_state"][LIGHT] + gm["count_state"][DARK] >= 64:
+                gm["is_game_over"] = True
+                print('\n 合計数が64になったので終了します。')
+                break
+            elif gm["is_passed_previous"]:
+                gm["is_game_over"] = True
+                print('\n 2回連続でパスなので終了します。')
+                break
+            else:
+                print('\n 置ける場所がないのでパスします。')
+                gm["turn"] += 1
+                continue
+
+        if gm["players"][gm["current_turn"]]["is_random"]:
+            selected_r, selected_c = automatic_selection(board)
+        else:
+            selected_r, selected_c = manual_selection(board)
+
+        board[selected_r][selected_c]["state"] = gm["current_turn"]
+        for cell in board[selected_r][selected_c]["reversible_cells"]:
+            cell["state"] = gm["current_turn"]
+
+        gm["turn"] += 1
+
+    if gm["count_state"][LIGHT] > gm["count_state"][DARK]:
+        print(f'\n WINNER: {STATE_COLORS[LIGHT]}')
+    elif gm["count_state"][LIGHT] < gm["count_state"][DARK]:
+        print(f'\n WINNER: {STATE_COLORS[DARK]}')
     else:
-        # そうでなければ手動で選択
-        selected_r, selected_c = manual_selection(board)
-
-    ############################
-    # 反転する
-
-    # 1. 選択セルを反転
-    board[selected_r][selected_c]["state"] = gm["current_turn"]
-
-    # 2. 選択セルの反転可能なセルを反転
-    for cell in board[selected_r][selected_c]["reversible_cells"]:
-        cell["state"] = gm["current_turn"]
-
-    break
-
-############################
-# ゲーム終了後の結果
+        print('\n DRAW')
