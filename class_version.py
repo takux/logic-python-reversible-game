@@ -22,6 +22,14 @@ class Player():
         self.is_random = is_random
 
 
+class Cell():
+    def __init__(self, r, c, state=EMPTY):
+        self.r = r
+        self.c = c
+        self.state = state
+        self.reversible_cells = []
+
+
 def create_board():
     """Create initial board."""
     board = []
