@@ -122,27 +122,26 @@ gm = {
 }
 
 
-# refresh_board
+def refresh_board(board, gm):
+    """Refresh board."""
+    gm["count_state"] = [0, 0, 0, 0]
+    gm["is_passed"] = True
+    for r in range(8):
+        for c in range(8):
+            board[r][c]["reversible_cells"] = []
+            if board[r][c]["state"] == AVAILABLE:
+                board[r][c]["state"] = EMPTY
+            if board[r][c]["state"] == EMPTY:
+                board[r][c]["reversible_cells"] = get_reversible_cells(
+                    board, board[r][c], gm["current_turn"])
+            if len(board[r][c]["reversible_cells"]) > 0:
+                board[r][c]["state"] = AVAILABLE
+                gm["is_passed"] = False
+            gm["count_state"][board[r][c]["state"]] += 1
+
+# board = create_board()
 
 
-gm["count_state"] = [0, 0, 0, 0]
-
-for r in range(8):
-    for c in range(8):
-
-        # reversible_cells を cell（辞書） に持たせる
-        board[r][c]["reversible_cells"] = []
-
-        # 前回の茶色を緑に戻す
-        if board[r][c]["state"] == AVAILABLE:
-            board[r][c]["state"] = EMPTY
-
-        # もし前ターンが置けるセル（茶）なら、状態を元に戻す（緑）
-
-        # 置けるかどうか判定、緑以外は置けない
-
-        # count_stateをstate別にインクリメントしてカウントする
-        gm["count_state"][board[r][c]["state"]] += 1
-
-
-gm["count_state"]
+# gm["current_turn"] = LIGHT
+# refresh_board(board, gm)
+# display_board(board)
