@@ -21,7 +21,7 @@ def create_board():
     for r in range(8):
         board.append([])
         for c in range(8):
-            cell = {"r": r, "c": c, "state": 0}
+            cell = {"r": r, "c": c, "state": 0, "reversible_cells": []}
             if r == 3 and c == 3:
                 cell["state"] = 1
             elif r == 3 and c == 4:
@@ -120,3 +120,29 @@ gm = {
         2: {"name": "B", "is_random": True},
     }
 }
+
+
+# refresh_board
+
+
+gm["count_state"] = [0, 0, 0, 0]
+
+for r in range(8):
+    for c in range(8):
+
+        # reversible_cells を cell（辞書） に持たせる
+        board[r][c]["reversible_cells"] = []
+
+        # 前回の茶色を緑に戻す
+        if board[r][c]["state"] == AVAILABLE:
+            board[r][c]["state"] = EMPTY
+
+        # もし前ターンが置けるセル（茶）なら、状態を元に戻す（緑）
+
+        # 置けるかどうか判定、緑以外は置けない
+
+        # count_stateをstate別にインクリメントしてカウントする
+        gm["count_state"][board[r][c]["state"]] += 1
+
+
+gm["count_state"]
