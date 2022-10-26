@@ -168,112 +168,47 @@ def automatic_selection(board):
         if board[r][c]["state"] == AVAILABLE:
             return r, c
 
+# play_game
 
-def play_game():
-    """"""
+
+############################
+# 初期化
+gm = create_game_manager()
+gm["players"][1]["is_random"] = True
+gm["players"][2]["is_random"] = True
+board = create_board()
+
+while True:
     ############################
-    # 初期化
-    gm["turn"] = 1
-    # プレイヤー作成
-    gm["players"][1]["is_random"] = True
-    gm["players"][2]["is_random"] = True
-    board = create_board()
-    ############################
-
-    # is_game_over = Falseなら続ける
-    while not gm["is_game_over"]:
-        ############################
-        # ターンごとの初期化
-        # is_passed を is_passed_previous へコピーし、初期化
-        gm["is_passed_previous"] = gm["is_passed"]
-        gm["is_passed"] = False
-        # 現ターンの色 (LIGHT or DARK)
-        if gm["turn"] % 2 == 0:
-            # 偶数ターン
-            gm["current_turn"] = DARK
-        else:
-            # 奇数ターン
-            gm["current_turn"] = LIGHT
-        ############################
-
-        ############################
-        # 表示
-        # 現ターンの色のセルをリフレッシュ
-        refresh_board(board, gm)
-
-        print(
-            f"""\
------------------------------------
- {STATE_COLORS[gm["current_turn"]]}　TURN {gm["turn"]} [{STATE_COLORS[1]}　: {gm["count_state"][1]} {STATE_COLORS[2]}　: {gm["count_state"][2]}] 
------------------------------------""")
-        display_board(board)
-        ############################
-
-        ############################
-        # 終了条件チェック
-        # 置ける場所があるかどうか判定
-        # 置ける場所がない場合、つまり is_passed = True の場合
-        if gm["is_passed"]:
-
-            if gm["count_state"][1] + gm["count_state"][2] >= 64:
-                # diskの合計数が64になったら終了
-                gm["is_game_over"] = True
-                # print('\n The total of LIGHT and DARK cells is now 64.)
-                print('\n 合計数が64になったので終了します。')
-                break
-            elif gm["is_passed_previous"]:
-                # 1. 前回もスキップしていればゲーム終了（両者とも置けないので）
-                gm["is_game_over"] = True
-                # print('\n It is the second pass in a row, so it is terminated.')
-                print('\n 2回連続でパスなので終了します。')
-                break  # continueでもOK
-            else:
-                # 2. 前回は置けていたら、ターンをスキップして次のターンへ
-                gm["is_passed"] = True
-                # print('\n There is no place to put, so skip the turn.')
-                print(
-                    f'\n {STATE_COLORS[gm["current_turn"]]}　は置ける場所がないのでスキップします。')
-                # ターンを進める
-                gm["turn"] += 1
-                continue
-        ############################
-
-        ############################
-        # 置く場所を選択
-        # 置ける場所がある場合
-        # 現在のターンプレイヤーがランダムかどうか判定
-        if gm["players"][gm["current_turn"]]["is_random"]:
-            # ランダムならランダムで選択
-            selected_r, selected_c = automatic_selection(board)
-        else:
-            # User
-            while True:
-                # ユーザー入力のセルを取得
-                selected_r, selected_c = manual_selection()
-                # ユーザー入力のセルが置けるかどうか判定
-                if board[selected_r][selected_c]["state"] != AVAILABLE:
-                    print("置けません。")
-                    continue
-                break
-        ############################
-
-        ############################
-        # 反転する
-        # 1. 選択セルを反転
-        board[selected_r][selected_c]["state"] = gm["current_turn"]
-        # 2. 選択セルの反転可能なセルを反転
-        for cell in board[selected_r][selected_c]["reversible_cells"]:
-            cell["state"] = gm["current_turn"]
-        ############################
-
-        # ターンを進める
-        gm["turn"] += 1
-
-    # print(f'\n ゲーム終了')
-
-    if gm['count_state'][LIGHT] > gm['count_state'][DARK]:
-        print(f'\n WINNER: {STATE_COLORS[1]}')
-    elif gm['count_state'][LIGHT] < gm['count_state'][DARK]:
-        print(f'\n WINNER: {STATE_COLORS[2]}')
+    # ターンごとの初期化
+    gm["is_passed_previous"] = gm["is_passed"]
+    gm["is_passed"] = False
+    # 現在のターンを設定
+    if gm["turn"] % 2 == 0:
+        # 偶数
+        gm["current_turn"] = DARK
     else:
-        print(f'\n DRAW')
+        # 奇数
+        gm["current_turn"] = LIGHT
+
+    ############################
+    # 表示
+
+    ############################
+    # 終了チェック
+
+    ############################
+    # セルの選択
+
+    ############################
+    # 反転する
+
+
+############################
+# ゲーム終了後の結果
+
+
+if 9 % 2 == 0:
+    print('偶数です')
+else:
+    print('奇数')
