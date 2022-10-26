@@ -195,14 +195,14 @@ def play_game():
         if gm["is_passed"]:
             if gm["count_state"][LIGHT] + gm["count_state"][DARK] >= 64:
                 gm["is_game_over"] = True
-                print('\n 合計数が64になったので終了します。')
+                print('\n The total of LIGHT and DARK cells is now 64.')
                 break
             elif gm["is_passed_previous"]:
                 gm["is_game_over"] = True
-                print('\n 2回連続でパスなので終了します。')
+                print('\n It is the second pass in a row, so it is terminated.')
                 break
             else:
-                print('\n 置ける場所がないのでパスします。')
+                print('\n There is no place to put, so skip the turn.')
                 gm["turn"] += 1
                 continue
 
