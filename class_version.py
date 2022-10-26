@@ -78,6 +78,7 @@ class Board():
 b = Board()
 b.display_board()
 
+
 # def create_game_manager():
 #     """Create a game manager object."""
 #     return {
@@ -94,7 +95,6 @@ b.display_board()
 #     }
 
 # GameManager class
-
 
 class GameManager(Board):
     def __init__(self):
@@ -175,47 +175,44 @@ class GameManager(Board):
         self.is_passed = True
         for r in range(8):
             for c in range(8):
-                board[r][c].reversible_cells = []
-                if board[r][c].state == AVAILABLE:
-                    board[r][c].state = EMPTY
-                if board[r][c].state == EMPTY:
-                    board[r][c].reversible_cells = self.get_reversible_cells(
-                        board[r][c])
-                if len(board[r][c].reversible_cells) > 0:
-                    board[r][c].state = AVAILABLE
+                self.board[r][c].reversible_cells = []
+                if self.board[r][c].state == AVAILABLE:
+                    self.board[r][c].state = EMPTY
+                if self.board[r][c].state == EMPTY:
+                    self.board[r][c].reversible_cells = self.get_reversible_cells(
+                        self.board[r][c])
+                if len(self.board[r][c].reversible_cells) > 0:
+                    self.board[r][c].state = AVAILABLE
                     self.is_passed = False
-                self.count_state[board[r][c].state] += 1
+                self.count_state[self.board[r][c].state] += 1
 
     # manual_selection
 
+    def manual_selection(self):
+        """Converts user input to integer indices."""
+        while True:
+            selection = input("Select a cell (e.g r0 c4 => 04): ")
+            if len(selection) != 2:
+                raise Exception("The number of characters is limited to 2.")
+            r = int(selection[0])
+            c = int(selection[1])
+            if self.board[r][c].state == AVAILABLE:
+                return r, c
+
     # automatic_selection
+    def automatic_selection(self):
+        """Selects a cell automatically."""
+        while True:
+            r = random.randint(0, 7)
+            c = random.randint(0, 7)
+            if self.board[r][c].state == AVAILABLE:
+                return r, c
 
     # play_game
 
 
 gm = GameManager()
 gm.display_board()
-
-
-def manual_selection(board):
-    """Converts user input to integer indices."""
-    while True:
-        selection = input("Select a cell (e.g r0 c4 => 04): ")
-        if len(selection) != 2:
-            raise Exception("The number of characters is limited to 2.")
-        r = int(selection[0])
-        c = int(selection[1])
-        if board[r][c].state == AVAILABLE:
-            return r, c
-
-
-def automatic_selection(board):
-    """Selects a cell automatically."""
-    while True:
-        r = random.randint(0, 7)
-        c = random.randint(0, 7)
-        if board[r][c].state == AVAILABLE:
-            return r, c
 
 
 def play_game():
