@@ -30,6 +30,18 @@ class Cell():
         self.reversible_cells = []
 
 
+class Direction():
+    def __init__(self, base_cell, target_cell):
+        self.r_dir = target_cell.r - base_cell.r
+        self.c_dir = target_cell.c - base_cell.c
+
+
+base_cell = Cell(0, 0)
+target_cell = Cell(0, 1)
+dirs = Direction(base_cell, target_cell)
+dirs.c_dir
+
+
 def create_board():
     """Create initial board."""
     board = []
@@ -75,13 +87,6 @@ def get_surrounding_cells(board, base_cell):
                 continue
             surrounding_cells.append(board[r][c])
     return surrounding_cells
-
-
-def get_directions(base_cell, target_cell):
-    """Get directions from target and base cells."""
-    r_dir = target_cell["r"] - base_cell["r"]
-    c_dir = target_cell["c"] - base_cell["c"]
-    return r_dir, c_dir
 
 
 def get_reversible_cells_in_one_dir(board, current_turn, base_cell, dirs):
