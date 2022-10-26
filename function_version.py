@@ -105,3 +105,18 @@ def get_reversible_cells(board, base_cell, current_turn):
             board, current_turn, base_cell, dirs)
         reversible_cells.extend(reversible_cells_in_one_dir)
     return reversible_cells
+
+
+# Game Manager
+gm = {
+    "turn": 1,
+    "current_turn": LIGHT,
+    "is_game_over": False,
+    "is_passed": False,
+    "is_passed_previous": False,
+    "count_state": [0, 0, 0, 0],  # EMPTY, LIGHT, DARK, AVAILABLE
+    "players": {
+        1: {"name": "A", "is_random": True},
+        2: {"name": "B", "is_random": True},
+    }
+}
