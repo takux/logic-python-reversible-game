@@ -67,3 +67,49 @@ def get_directions(base_cell, target_cell):
     r_dir = target_cell["r"] - base_cell["r"]
     c_dir = target_cell["c"] - base_cell["c"]
     return r_dir, c_dir
+
+
+# current turn == yellow
+current_turn = LIGHT
+
+# board
+board = create_board()
+board[3][3]["state"] = EMPTY
+board[3][4]["state"] = EMPTY
+board[4][3]["state"] = EMPTY
+board[4][4]["state"] = EMPTY
+
+board[0][0]["state"] = current_turn
+board[0][7]["state"] = LIGHT
+
+board[0][1]["state"] = DARK
+board[0][2]["state"] = DARK
+board[0][3]["state"] = DARK
+board[0][4]["state"] = DARK
+board[0][5]["state"] = DARK
+board[0][6]["state"] = DARK
+display_board(board)
+
+# base_cell
+base_cell = board[0][0]
+
+# target_cell
+target_cell = board[0][1]
+
+# dirs
+dirs = get_directions(base_cell, target_cell)
+dirs
+
+# １つの向きに進んで反転可能なセルを取得
+
+# 反転可能なリスト
+
+
+# ループ条件
+# ボード外なら終了
+# カラーが Green or Brown なら終了
+# 同じ色ならリストに加えて（後で挟めるか判定するため）終了
+# 相手色ならリストに追加
+
+
+# ループ後のリストをチェック
