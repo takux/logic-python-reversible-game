@@ -145,3 +145,13 @@ def refresh_board(board, gm):
 # gm["current_turn"] = LIGHT
 # refresh_board(board, gm)
 # display_board(board)
+
+
+def manual_selection():
+    """Converts user input to integer indices."""
+    selection = input("Select a cell (e.g r0 c4 => 04): ")
+    if len(selection) != 2:
+        raise Exception("The number of characters is limited to 2.")
+    r = int(selection[0])
+    c = int(selection[1])
+    return r, c
