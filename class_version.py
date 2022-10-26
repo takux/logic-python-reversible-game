@@ -79,6 +79,41 @@ b = Board()
 b.display_board()
 
 
+# def create_game_manager():
+#     """Create a game manager object."""
+#     return {
+#         "turn": 1,
+#         "current_turn": LIGHT,
+#         "is_game_over": False,
+#         "is_passed": False,
+#         "is_passed_previous": False,
+#         "count_state": [0, 0, 0, 0],  # EMPTY, LIGHT, DARK, AVAILABLE
+#         "players": {
+#             1: {"name": "A", "is_random": True},
+#             2: {"name": "B", "is_random": True},
+#         }
+#     }
+
+# GameManager class
+class GameManager(Board):
+    def __init__(self):
+        super().__init__()
+        self.turn = 1
+        self.current_turn = LIGHT
+        self.is_game_over = False
+        self.is_passed = False
+        self.is_passed_previous = False
+        self.count_state = [0, 0, 0, 0]  # EMPTY, LIGHT, DARK, AVAILABLE
+        self.players = {
+            LIGHT: Player("A"),
+            DARK: Player("B"),
+        }
+
+
+gm = GameManager()
+gm.display_board()
+
+
 def get_surrounding_cells(board, base_cell):
     """Get the surrounding cells from the base cell."""
     start_r = base_cell["r"] - 1
@@ -132,22 +167,6 @@ def get_reversible_cells(board, base_cell, current_turn):
             board, current_turn, base_cell, dirs)
         reversible_cells.extend(reversible_cells_in_one_dir)
     return reversible_cells
-
-
-def create_game_manager():
-    """Create a game manager object."""
-    return {
-        "turn": 1,
-        "current_turn": LIGHT,
-        "is_game_over": False,
-        "is_passed": False,
-        "is_passed_previous": False,
-        "count_state": [0, 0, 0, 0],  # EMPTY, LIGHT, DARK, AVAILABLE
-        "players": {
-            1: {"name": "A", "is_random": True},
-            2: {"name": "B", "is_random": True},
-        }
-    }
 
 
 def refresh_board(board, gm):
