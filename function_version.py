@@ -103,10 +103,21 @@ dirs
 # １つの向きに進んで反転可能なセルを取得
 
 # 反転可能なリスト
-
-
+reversible_cells_in_one_dir = []
+next_r = base_cell["r"]
+next_c = base_cell["c"]
 # ループ条件
-# ボード外なら終了
+while True:
+    next_r += dirs[0]
+    next_c += dirs[1]
+
+    # ボード外なら終了
+    if not (-1 < next_r < 8) or not (-1 < next_c < 8):
+        break
+
+    print(next_r, next_c)
+
+
 # カラーが Green or Brown なら終了
 # 同じ色ならリストに加えて（後で挟めるか判定するため）終了
 # 相手色ならリストに追加
