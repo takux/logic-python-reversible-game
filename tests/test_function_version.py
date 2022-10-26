@@ -167,5 +167,5 @@ def test_automatic_selection():
     assert board[r][c]["state"] == AVAILABLE
 
 
-# def test_play_game():
-#     play_game()
+def test_play_game():
+    play_game()
