@@ -193,6 +193,21 @@ while True:
 
     ############################
     # 表示
+    refresh_board(board, gm)
+
+    print("""\
+-----------------------------------
+{} TURN {} [{}　: {} {}　: {}] 
+-----------------------------------""".format(
+        STATE_COLORS[gm["current_turn"]],
+        gm["turn"],
+        STATE_COLORS[LIGHT],
+        gm["count_state"][LIGHT],
+        STATE_COLORS[DARK],
+        gm["count_state"][DARK],
+    ))
+
+    display_board(board)
 
     ############################
     # 終了チェック
@@ -203,12 +218,8 @@ while True:
     ############################
     # 反転する
 
+    break
+
 
 ############################
 # ゲーム終了後の結果
-
-
-if 9 % 2 == 0:
-    print('偶数です')
-else:
-    print('奇数')
