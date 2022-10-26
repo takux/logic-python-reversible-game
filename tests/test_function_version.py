@@ -147,3 +147,11 @@ def test_refresh_board(capfd):
     assert len(board[2][4]["reversible_cells"]) > 0
     assert board[2][4]["reversible_cells"][0]["r"] == 3
     assert board[2][4]["reversible_cells"][0]["c"] == 4
+
+
+def test_manual_selection(monkeypatch):
+    # Simulate user input
+    # e.g. 04
+    number_inputs = StringIO('04\n')
+    monkeypatch.setattr('sys.stdin', number_inputs)
+    assert manual_selection() == (0, 4)
