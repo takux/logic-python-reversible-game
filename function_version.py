@@ -1,3 +1,4 @@
+import random
 import pandas as pd
 
 # for .py file
@@ -155,3 +156,15 @@ def manual_selection():
     r = int(selection[0])
     c = int(selection[1])
     return r, c
+
+
+def automatic_selection(board):
+    """Selects a cell automatically."""
+    while True:
+        r = random.randint(0, 7)
+        c = random.randint(0, 7)
+        if board[r][c]["state"] == AVAILABLE:
+            return r, c
+
+
+# automatic_selection(board)
