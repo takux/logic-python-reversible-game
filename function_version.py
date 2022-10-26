@@ -244,8 +244,14 @@ while True:
     ############################
     # 反転する
 
-    break
+    # 1. 選択セルを反転
+    board[selected_r][selected_c]["state"] = gm["current_turn"]
 
+    # 2. 選択セルの反転可能なセルを反転
+    for cell in board[selected_r][selected_c]["reversible_cells"]:
+        cell["state"] = gm["current_turn"]
+
+    break
 
 ############################
 # ゲーム終了後の結果
