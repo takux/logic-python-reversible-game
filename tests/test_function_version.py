@@ -1,5 +1,5 @@
 from io import StringIO
-from function_version import STATE_COLORS, EMPTY, LIGHT, DARK, AVAILABLE, create_board, display_board, get_surrounding_cells
+from function_version import *
 
 
 def test_const():
@@ -52,3 +52,13 @@ def test_get_surrounding_cells():
     assert len(r7c7_srrounging_cells) == 3
     # number of cells around the cell per center
     assert len(r3c3_srrounging_cells) == 8
+
+
+def test_get_directions():
+    board = create_board()
+    # Check the cell in the right direction
+    assert get_directions(board[0][0], board[0][1]) == (0, 1)
+    # Check the cell in the bottom right direction
+    assert get_directions(board[0][0], board[1][1]) == (1, 1)
+    # Check the cell in the bottom direction
+    assert get_directions(board[0][0], board[1][0]) == (1, 0)
