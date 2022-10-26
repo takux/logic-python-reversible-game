@@ -169,7 +169,6 @@ def automatic_selection(board):
         c = random.randint(0, 7)
         if board[r][c]["state"] == AVAILABLE:
             return r, c
-
 # play_game
 
 
@@ -233,6 +232,14 @@ while True:
 
     ############################
     # セルの選択
+
+    # 現在のターンプレイヤーがランダムかどうか判定
+    if gm["players"][gm["current_turn"]]["is_random"]:
+        # ランダムなら自動で選択
+        selected_r, selected_c = automatic_selection(board)
+    else:
+        # そうでなければ手動で選択
+        selected_r, selected_c = manual_selection(board)
 
     ############################
     # 反転する
