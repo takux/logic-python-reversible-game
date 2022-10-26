@@ -78,7 +78,6 @@ class Board():
 b = Board()
 b.display_board()
 
-
 # def create_game_manager():
 #     """Create a game manager object."""
 #     return {
@@ -95,6 +94,8 @@ b.display_board()
 #     }
 
 # GameManager class
+
+
 class GameManager(Board):
     def __init__(self):
         super().__init__()
@@ -129,6 +130,30 @@ class GameManager(Board):
         return surrounding_cells
 
     # get_reversible_cells_in_one_dir
+    def get_reversible_cells_in_one_dir(self, base_cell, dirs):
+        """Get all reversible cells in one direction."""
+        reversible_cells_in_one_dir = []
+        next_r = base_cell.r
+        next_c = base_cell.c
+        while True:
+            next_r += dirs.r_dir
+            next_c += dirs.c_dir
+            if not (-1 < next_r < 8) or not (-1 < next_c < 8):
+                break
+            if self.board[next_r][next_c].state == EMPTY or board[next_r][next_c].state == AVAILABLE:
+                break
+            if self.board[next_r][next_c].state == self.current_turn:
+                reversible_cells_in_one_dir.append(self.board[next_r][next_c])
+                break
+            if self.board[next_r][next_c].state != self.current_turn:
+                reversible_cells_in_one_dir.append(self.board[next_r][next_c])
+
+        if len(reversible_cells_in_one_dir) > 0:
+            if reversible_cells_in_one_dir[-1].state == self.current_turn:
+                reversible_cells_in_one_dir.pop()
+            else:
+                reversible_cells_in_one_dir.clear()
+        return reversible_cells_in_one_dir
 
     # get_reversible_cells
 
@@ -143,32 +168,6 @@ class GameManager(Board):
 
 gm = GameManager()
 gm.display_board()
-
-
-def get_reversible_cells_in_one_dir(board, current_turn, base_cell, dirs):
-    """Get all reversible cells in one direction."""
-    reversible_cells_in_one_dir = []
-    next_r = base_cell["r"]
-    next_c = base_cell["c"]
-    while True:
-        next_r += dirs[0]
-        next_c += dirs[1]
-        if not (-1 < next_r < 8) or not (-1 < next_c < 8):
-            break
-        if board[next_r][next_c].state == EMPTY or board[next_r][next_c].state == AVAILABLE:
-            break
-        if board[next_r][next_c].state == current_turn:
-            reversible_cells_in_one_dir.append(board[next_r][next_c])
-            break
-        if board[next_r][next_c].state != current_turn:
-            reversible_cells_in_one_dir.append(board[next_r][next_c])
-
-    if len(reversible_cells_in_one_dir) > 0:
-        if reversible_cells_in_one_dir[-1].state == current_turn:
-            reversible_cells_in_one_dir.pop()
-        else:
-            reversible_cells_in_one_dir.clear()
-    return reversible_cells_in_one_dir
 
 
 def get_reversible_cells(board, base_cell, current_turn):
