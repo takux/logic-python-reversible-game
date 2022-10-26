@@ -62,3 +62,31 @@ def test_get_directions():
     assert get_directions(board[0][0], board[1][1]) == (1, 1)
     # Check the cell in the bottom direction
     assert get_directions(board[0][0], board[1][0]) == (1, 0)
+
+
+def test_get_reversiable_cells_in_one_dir():
+    # Check the cell in the right direction
+    # Row 1: [1,2,2,2,2,1,0,0]
+    # Current turn color: 1
+    # base_cell: Top left cell
+    # dirs: Right direction
+    current_turn = LIGHT
+    next_turn = DARK
+    board = create_board()
+    # Make the first line as configured.
+    for i, cell in enumerate(board[0]):
+        if i == 0 or i == 5:
+            cell["state"] = 1
+        elif i < 5:
+            cell["state"] = 2
+        else:
+            cell["state"] = 0
+    base_cell = board[0][0]
+    dirs = get_directions(base_cell, board[0][1])
+    reversiable_cells_in_one_dir = get_reversible_cells_in_one_dir(
+        board, current_turn, base_cell, dirs)
+    # Number of reversible cells
+    assert len(reversiable_cells_in_one_dir) == 4
+    # All colors are opposite to the current color
+    for reversiable_cell in reversiable_cells_in_one_dir:
+        assert reversiable_cell["state"] == next_turn
