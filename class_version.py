@@ -169,6 +169,22 @@ class GameManager(Board):
         return reversible_cells
 
     # refresh_board
+    def refresh_board(self):
+        """Refresh board."""
+        self.count_state = [0, 0, 0, 0]
+        self.is_passed = True
+        for r in range(8):
+            for c in range(8):
+                board[r][c].reversible_cells = []
+                if board[r][c].state == AVAILABLE:
+                    board[r][c].state = EMPTY
+                if board[r][c].state == EMPTY:
+                    board[r][c].reversible_cells = self.get_reversible_cells(
+                        board[r][c])
+                if len(board[r][c].reversible_cells) > 0:
+                    board[r][c].state = AVAILABLE
+                    self.is_passed = False
+                self.count_state[board[r][c].state] += 1
 
     # manual_selection
 
@@ -179,24 +195,6 @@ class GameManager(Board):
 
 gm = GameManager()
 gm.display_board()
-
-
-def refresh_board(board, gm):
-    """Refresh board."""
-    gm["count_state"] = [0, 0, 0, 0]
-    gm["is_passed"] = True
-    for r in range(8):
-        for c in range(8):
-            board[r][c]["reversible_cells"] = []
-            if board[r][c].state == AVAILABLE:
-                board[r][c].state = EMPTY
-            if board[r][c].state == EMPTY:
-                board[r][c]["reversible_cells"] = get_reversible_cells(
-                    board, board[r][c], gm["current_turn"])
-            if len(board[r][c]["reversible_cells"]) > 0:
-                board[r][c].state = AVAILABLE
-                gm["is_passed"] = False
-            gm["count_state"][board[r][c].state] += 1
 
 
 def manual_selection(board):
