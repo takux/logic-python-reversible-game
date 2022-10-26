@@ -210,7 +210,24 @@ while True:
     display_board(board)
 
     ############################
-    # 終了チェック
+    # 終了チェック（つまりis_passed = Trueの場合のみチェック）
+    if gm["is_passed"]:
+
+        if gm["count_state"][LIGHT] + gm["count_state"][DARK] >= 64:
+            # LIGHTとDARKのセルの合計数が64以上かどうか
+            gm["is_game_over"] = True
+            print('\n 合計数が64になったので終了します。')
+            break
+        elif gm["is_passed_previous"]:
+            # 前回もパスしていればゲーム終了（2回連続パス）
+            gm["is_game_over"] = True
+            print('\n 2回連続でパスなので終了します。')
+            break
+        else:
+            # 前回は置けていたら、ターンをパスして次のターンへ
+            print('\n 置ける場所がないのでパスします。')
+            gm["turn"] += 1
+            continue
 
     ############################
     # セルの選択
