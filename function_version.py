@@ -115,12 +115,16 @@ while True:
     if not (-1 < next_r < 8) or not (-1 < next_c < 8):
         break
 
-    print(next_r, next_c)
+    # カラーが Green or Brown なら終了
+    if board[next_r][next_c]["state"] == EMPTY or board[next_r][next_c]["state"] == AVAILABLE:
+        break
 
+    reversible_cells_in_one_dir.append(board[next_r][next_c])
 
-# カラーが Green or Brown なら終了
 # 同じ色ならリストに加えて（後で挟めるか判定するため）終了
 # 相手色ならリストに追加
 
 
 # ループ後のリストをチェック
+
+reversible_cells_in_one_dir
