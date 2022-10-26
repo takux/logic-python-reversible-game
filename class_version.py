@@ -42,14 +42,10 @@ dirs = Direction(base_cell, target_cell)
 dirs.c_dir
 
 
-# .state => .state
-
-# Board class
 class Board():
     def __init__(self):
-        self.board = create_board()
+        self.board = self.create_board()
 
-    # create_board
     def create_board(self):
         """Create initial board."""
         board = []
@@ -68,19 +64,19 @@ class Board():
                 board[r].append(cell)
         return board
 
+    def display_board(self):
+        """Display boards using Pandas."""
+        df = pd.DataFrame(self.board)
+        df = df.applymap(lambda v: v.state)
+        df = df.replace(EMPTY, STATE_COLORS[EMPTY])
+        df = df.replace(LIGHT, STATE_COLORS[LIGHT])
+        df = df.replace(DARK, STATE_COLORS[DARK])
+        df = df.replace(AVAILABLE, STATE_COLORS[AVAILABLE])
+        display(df)
 
-# display_board
 
-
-def display_board(board):
-    """Display boards using Pandas."""
-    df = pd.DataFrame(board)
-    df = df.applymap(lambda v: v.state)
-    df = df.replace(EMPTY, STATE_COLORS[EMPTY])
-    df = df.replace(LIGHT, STATE_COLORS[LIGHT])
-    df = df.replace(DARK, STATE_COLORS[DARK])
-    df = df.replace(AVAILABLE, STATE_COLORS[AVAILABLE])
-    display(df)
+b = Board()
+b.display_board()
 
 
 def get_surrounding_cells(board, base_cell):
