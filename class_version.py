@@ -42,29 +42,40 @@ dirs = Direction(base_cell, target_cell)
 dirs.c_dir
 
 
-def create_board():
-    """Create initial board."""
-    board = []
-    for r in range(8):
-        board.append([])
-        for c in range(8):
-            cell = {"r": r, "c": c, "state": 0, "reversible_cells": []}
-            if r == 3 and c == 3:
-                cell["state"] = LIGHT
-            elif r == 3 and c == 4:
-                cell["state"] = DARK
-            elif r == 4 and c == 3:
-                cell["state"] = DARK
-            elif r == 4 and c == 4:
-                cell["state"] = LIGHT
-            board[r].append(cell)
-    return board
+# .state => .state
+
+# Board class
+class Board():
+    def __init__(self):
+        self.board = create_board()
+
+    # create_board
+    def create_board(self):
+        """Create initial board."""
+        board = []
+        for r in range(8):
+            board.append([])
+            for c in range(8):
+                cell = Cell(r, c)
+                if r == 3 and c == 3:
+                    cell.state = LIGHT
+                elif r == 3 and c == 4:
+                    cell.state = DARK
+                elif r == 4 and c == 3:
+                    cell.state = DARK
+                elif r == 4 and c == 4:
+                    cell.state = LIGHT
+                board[r].append(cell)
+        return board
+
+
+# display_board
 
 
 def display_board(board):
     """Display boards using Pandas."""
     df = pd.DataFrame(board)
-    df = df.applymap(lambda v: v["state"])
+    df = df.applymap(lambda v: v.state)
     df = df.replace(EMPTY, STATE_COLORS[EMPTY])
     df = df.replace(LIGHT, STATE_COLORS[LIGHT])
     df = df.replace(DARK, STATE_COLORS[DARK])
@@ -99,16 +110,16 @@ def get_reversible_cells_in_one_dir(board, current_turn, base_cell, dirs):
         next_c += dirs[1]
         if not (-1 < next_r < 8) or not (-1 < next_c < 8):
             break
-        if board[next_r][next_c]["state"] == EMPTY or board[next_r][next_c]["state"] == AVAILABLE:
+        if board[next_r][next_c].state == EMPTY or board[next_r][next_c].state == AVAILABLE:
             break
-        if board[next_r][next_c]["state"] == current_turn:
+        if board[next_r][next_c].state == current_turn:
             reversible_cells_in_one_dir.append(board[next_r][next_c])
             break
-        if board[next_r][next_c]["state"] != current_turn:
+        if board[next_r][next_c].state != current_turn:
             reversible_cells_in_one_dir.append(board[next_r][next_c])
 
     if len(reversible_cells_in_one_dir) > 0:
-        if reversible_cells_in_one_dir[-1]["state"] == current_turn:
+        if reversible_cells_in_one_dir[-1].state == current_turn:
             reversible_cells_in_one_dir.pop()
         else:
             reversible_cells_in_one_dir.clear()
@@ -150,15 +161,15 @@ def refresh_board(board, gm):
     for r in range(8):
         for c in range(8):
             board[r][c]["reversible_cells"] = []
-            if board[r][c]["state"] == AVAILABLE:
-                board[r][c]["state"] = EMPTY
-            if board[r][c]["state"] == EMPTY:
+            if board[r][c].state == AVAILABLE:
+                board[r][c].state = EMPTY
+            if board[r][c].state == EMPTY:
                 board[r][c]["reversible_cells"] = get_reversible_cells(
                     board, board[r][c], gm["current_turn"])
             if len(board[r][c]["reversible_cells"]) > 0:
-                board[r][c]["state"] = AVAILABLE
+                board[r][c].state = AVAILABLE
                 gm["is_passed"] = False
-            gm["count_state"][board[r][c]["state"]] += 1
+            gm["count_state"][board[r][c].state] += 1
 
 
 def manual_selection(board):
@@ -169,7 +180,7 @@ def manual_selection(board):
             raise Exception("The number of characters is limited to 2.")
         r = int(selection[0])
         c = int(selection[1])
-        if board[r][c]["state"] == AVAILABLE:
+        if board[r][c].state == AVAILABLE:
             return r, c
 
 
@@ -178,7 +189,7 @@ def automatic_selection(board):
     while True:
         r = random.randint(0, 7)
         c = random.randint(0, 7)
-        if board[r][c]["state"] == AVAILABLE:
+        if board[r][c].state == AVAILABLE:
             return r, c
 
 
@@ -214,14 +225,14 @@ def play_game():
         if gm["is_passed"]:
             if gm["count_state"][LIGHT] + gm["count_state"][DARK] >= 64:
                 gm["is_game_over"] = True
-                print('\n The total of LIGHT and DARK cells is now 64.')
+                print('\n 合計数が64になったので終了します。')
                 break
             elif gm["is_passed_previous"]:
                 gm["is_game_over"] = True
-                print('\n It is the second pass in a row, so it is terminated.')
+                print('\n 2回連続でパスなので終了します。')
                 break
             else:
-                print('\n There is no place to put, so skip the turn.')
+                print('\n 置ける場所がないのでパスします。')
                 gm["turn"] += 1
                 continue
 
@@ -230,9 +241,9 @@ def play_game():
         else:
             selected_r, selected_c = manual_selection(board)
 
-        board[selected_r][selected_c]["state"] = gm["current_turn"]
+        board[selected_r][selected_c].state = gm["current_turn"]
         for cell in board[selected_r][selected_c]["reversible_cells"]:
-            cell["state"] = gm["current_turn"]
+            cell.state = gm["current_turn"]
 
         gm["turn"] += 1
 
