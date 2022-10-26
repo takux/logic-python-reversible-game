@@ -209,69 +209,67 @@ class GameManager(Board):
                 return r, c
 
     # play_game
+    def play_game(self):
+        """Run the game with all codes."""
+        self.players[LIGHT].is_random = True
+        self.players[DARK].is_random = True
+
+        while True:
+            self.is_passed_previous = self.is_passed
+            self.is_passed = False
+            if self.turn % 2 == 0:
+                self.current_turn = DARK
+            else:
+                self.current_turn = LIGHT
+
+            self.refresh_board()
+
+            print("""\
+        -----------------------------------
+        {} TURN {} [{}　: {} {}　: {}] 
+        -----------------------------------""".format(
+                STATE_COLORS[self.current_turn],
+                self.turn,
+                STATE_COLORS[LIGHT],
+                self.count_state[LIGHT],
+                STATE_COLORS[DARK],
+                self.count_state[DARK],
+            ))
+
+            self.display_board()
+
+            if self.is_passed:
+                if self.count_state[LIGHT] + self.count_state[DARK] >= 64:
+                    self.is_game_over = True
+                    print('\n 合計数が64になったので終了します。')
+                    break
+                elif self.is_passed_previous:
+                    self.is_game_over = True
+                    print('\n 2回連続でパスなので終了します。')
+                    break
+                else:
+                    print('\n 置ける場所がないのでパスします。')
+                    self.turn += 1
+                    continue
+
+            if self.players[self.current_turn].is_random:
+                selected_r, selected_c = self.automatic_selection()
+            else:
+                selected_r, selected_c = self.manual_selection()
+
+            self.board[selected_r][selected_c].state = self.current_turn
+            for cell in self.board[selected_r][selected_c].reversible_cells:
+                cell.state = self.current_turn
+
+            self.turn += 1
+
+        if self.count_state[LIGHT] > self.count_state[DARK]:
+            print(f'\n WINNER: {STATE_COLORS[LIGHT]}')
+        elif self.count_state[LIGHT] < self.count_state[DARK]:
+            print(f'\n WINNER: {STATE_COLORS[DARK]}')
+        else:
+            print('\n DRAW')
 
 
 gm = GameManager()
 gm.display_board()
-
-
-def play_game():
-    """Run the game with all codes."""
-    gm = create_game_manager()
-    gm["players"][1]["is_random"] = True
-    gm["players"][2]["is_random"] = True
-    board = create_board()
-
-    while True:
-        gm["is_passed_previous"] = gm["is_passed"]
-        gm["is_passed"] = False
-        if gm["turn"] % 2 == 0:
-            gm["current_turn"] = DARK
-        else:
-            gm["current_turn"] = LIGHT
-
-        refresh_board(board, gm)
-        print("""\
-    -----------------------------------
-    {} TURN {} [{}　: {} {}　: {}] 
-    -----------------------------------""".format(
-            STATE_COLORS[gm["current_turn"]],
-            gm["turn"],
-            STATE_COLORS[LIGHT],
-            gm["count_state"][LIGHT],
-            STATE_COLORS[DARK],
-            gm["count_state"][DARK],
-        ))
-        display_board(board)
-
-        if gm["is_passed"]:
-            if gm["count_state"][LIGHT] + gm["count_state"][DARK] >= 64:
-                gm["is_game_over"] = True
-                print('\n 合計数が64になったので終了します。')
-                break
-            elif gm["is_passed_previous"]:
-                gm["is_game_over"] = True
-                print('\n 2回連続でパスなので終了します。')
-                break
-            else:
-                print('\n 置ける場所がないのでパスします。')
-                gm["turn"] += 1
-                continue
-
-        if gm["players"][gm["current_turn"]]["is_random"]:
-            selected_r, selected_c = automatic_selection(board)
-        else:
-            selected_r, selected_c = manual_selection(board)
-
-        board[selected_r][selected_c].state = gm["current_turn"]
-        for cell in board[selected_r][selected_c]["reversible_cells"]:
-            cell.state = gm["current_turn"]
-
-        gm["turn"] += 1
-
-    if gm["count_state"][LIGHT] > gm["count_state"][DARK]:
-        print(f'\n WINNER: {STATE_COLORS[LIGHT]}')
-    elif gm["count_state"][LIGHT] < gm["count_state"][DARK]:
-        print(f'\n WINNER: {STATE_COLORS[DARK]}')
-    else:
-        print('\n DRAW')
