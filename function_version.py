@@ -119,10 +119,14 @@ while True:
     if board[next_r][next_c]["state"] == EMPTY or board[next_r][next_c]["state"] == AVAILABLE:
         break
 
-    reversible_cells_in_one_dir.append(board[next_r][next_c])
+    # 同じ色ならリストに加えて（後で挟めるか判定するため）終了
+    if board[next_r][next_c]["state"] == current_turn:
+        reversible_cells_in_one_dir.append(board[next_r][next_c])
+        break
 
-# 同じ色ならリストに加えて（後で挟めるか判定するため）終了
-# 相手色ならリストに追加
+    # 相手色ならリストに追加
+    if board[next_r][next_c]["state"] != current_turn:
+        reversible_cells_in_one_dir.append(board[next_r][next_c])
 
 
 # ループ後のリストをチェック
