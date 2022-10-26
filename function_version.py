@@ -150,14 +150,16 @@ def refresh_board(board, gm):
 # display_board(board)
 
 
-def manual_selection():
+def manual_selection(board):
     """Converts user input to integer indices."""
-    selection = input("Select a cell (e.g r0 c4 => 04): ")
-    if len(selection) != 2:
-        raise Exception("The number of characters is limited to 2.")
-    r = int(selection[0])
-    c = int(selection[1])
-    return r, c
+    while True:
+        selection = input("Select a cell (e.g r0 c4 => 04): ")
+        if len(selection) != 2:
+            raise Exception("The number of characters is limited to 2.")
+        r = int(selection[0])
+        c = int(selection[1])
+        if board[r][c]["state"] == AVAILABLE:
+            return r, c
 
 
 def automatic_selection(board):
