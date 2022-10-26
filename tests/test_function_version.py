@@ -126,3 +126,24 @@ def test_get_reversible_cells():
     reversiable_cells = get_reversible_cells(board, board[2][2], LIGHT)
     # Number of reversible cells
     assert len(reversiable_cells) == 9
+
+
+def test_refresh_board(capfd):
+    gm["current_turn"] = LIGHT
+    board = create_board()
+    refresh_board(board, gm)
+    display_board(board)
+    out, err = capfd.readouterr()
+    #   🟩  🟩  🟩  🟩  🟩  🟩  🟩  🟩
+    #   🟩  🟩  🟩  🟩  🟩  🟩  🟩  🟩
+    #   🟩  🟩  🟩  🟩  🟫  🟩  🟩  🟩
+    #   🟩  🟩  🟩  🟡  🔵  🟫  🟩  🟩
+    #   🟩  🟩  🟫  🔵  🟡  🟩  🟩  🟩
+    #   🟩  🟩  🟩  🟫  🟩  🟩  🟩  🟩
+    #   🟩  🟩  🟩  🟩  🟩  🟩  🟩  🟩
+    #   🟩  🟩  🟩  🟩  🟩  🟩  🟩  🟩
+    assert STATE_COLORS[3] in out
+    assert board[2][4]["state"] == AVAILABLE
+    assert len(board[2][4]["reversible_cells"]) > 0
+    assert board[2][4]["reversible_cells"][0]["r"] == 3
+    assert board[2][4]["reversible_cells"][0]["c"] == 4
