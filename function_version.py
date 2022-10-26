@@ -24,13 +24,13 @@ def create_board():
         for c in range(8):
             cell = {"r": r, "c": c, "state": 0, "reversible_cells": []}
             if r == 3 and c == 3:
-                cell["state"] = 1
+                cell["state"] = LIGHT
             elif r == 3 and c == 4:
-                cell["state"] = 2
+                cell["state"] = DARK
             elif r == 4 and c == 3:
-                cell["state"] = 2
+                cell["state"] = DARK
             elif r == 4 and c == 4:
-                cell["state"] = 1
+                cell["state"] = LIGHT
             board[r].append(cell)
     return board
 
@@ -108,7 +108,6 @@ def get_reversible_cells(board, base_cell, current_turn):
     return reversible_cells
 
 
-# Game Manager
 def create_game_manager():
     """Create a game manager object."""
     return {
@@ -141,13 +140,6 @@ def refresh_board(board, gm):
                 board[r][c]["state"] = AVAILABLE
                 gm["is_passed"] = False
             gm["count_state"][board[r][c]["state"]] += 1
-
-# board = create_board()
-
-
-# gm["current_turn"] = LIGHT
-# refresh_board(board, gm)
-# display_board(board)
 
 
 def manual_selection(board):
