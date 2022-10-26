@@ -62,6 +62,8 @@ def get_surrounding_cells(board, base_cell):
     return surrounding_cells
 
 
-board = create_board()
-base_cell = board[7][7]
-get_surrounding_cells(board, base_cell)
+def get_directions(base_cell, target_cell):
+    """Get directions from target and base cells."""
+    r_dir = target_cell["r"] - base_cell["r"]
+    c_dir = target_cell["c"] - base_cell["c"]
+    return r_dir, c_dir
