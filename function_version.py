@@ -69,38 +69,6 @@ def get_directions(base_cell, target_cell):
     return r_dir, c_dir
 
 
-# current turn == yellow
-current_turn = LIGHT
-
-# board
-board = create_board()
-board[3][3]["state"] = EMPTY
-board[3][4]["state"] = EMPTY
-board[4][3]["state"] = EMPTY
-board[4][4]["state"] = EMPTY
-
-board[0][0]["state"] = current_turn
-board[0][7]["state"] = LIGHT
-
-board[0][1]["state"] = DARK
-board[0][2]["state"] = DARK
-board[0][3]["state"] = DARK
-board[0][4]["state"] = DARK
-board[0][5]["state"] = DARK
-board[0][6]["state"] = DARK
-display_board(board)
-
-# base_cell
-base_cell = board[0][0]
-
-# target_cell
-target_cell = board[0][1]
-
-# dirs
-dirs = get_directions(base_cell, target_cell)
-dirs
-
-
 def get_reversible_cells_in_one_dir(board, current_turn, base_cell, dirs):
     """Get all reversible cells in one direction."""
     reversible_cells_in_one_dir = []
@@ -127,4 +95,13 @@ def get_reversible_cells_in_one_dir(board, current_turn, base_cell, dirs):
     return reversible_cells_in_one_dir
 
 
-get_reversible_cells_in_one_dir(board, current_turn, base_cell, dirs)
+def get_reversible_cells(board, base_cell, current_turn):
+    """Get all reversible cells in all directions."""
+    reversible_cells = []
+    surrounding_cells = get_surrounding_cells(board, base_cell)
+    for cell in surrounding_cells:
+        dirs = get_directions(base_cell, cell)
+        reversible_cells_in_one_dir = get_reversible_cells_in_one_dir(
+            board, current_turn, base_cell, dirs)
+        reversible_cells.extend(reversible_cells_in_one_dir)
+    return reversible_cells
