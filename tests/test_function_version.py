@@ -77,11 +77,11 @@ def test_get_reversible_cells_in_one_dir():
     # Make the first line as configured.
     for i, cell in enumerate(board[0]):
         if i == 0 or i == 5:
-            cell["state"] = 1
+            cell["state"] = LIGHT
         elif i < 5:
-            cell["state"] = 2
+            cell["state"] = DARK
         else:
-            cell["state"] = 0
+            cell["state"] = EMPTY
     base_cell = board[0][0]
     dirs = get_directions(base_cell, board[0][1])
     reversiable_cells_in_one_dir = get_reversible_cells_in_one_dir(
