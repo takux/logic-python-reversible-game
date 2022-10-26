@@ -100,35 +100,31 @@ target_cell = board[0][1]
 dirs = get_directions(base_cell, target_cell)
 dirs
 
-# １つの向きに進んで反転可能なセルを取得
 
-# 反転可能なリスト
-reversible_cells_in_one_dir = []
-next_r = base_cell["r"]
-next_c = base_cell["c"]
-# ループ条件
-while True:
-    next_r += dirs[0]
-    next_c += dirs[1]
+def get_reversible_cells_in_one_dir(board, current_turn, base_cell, dirs):
+    """Get all reversible cells in one direction."""
+    reversible_cells_in_one_dir = []
+    next_r = base_cell["r"]
+    next_c = base_cell["c"]
+    while True:
+        next_r += dirs[0]
+        next_c += dirs[1]
+        if not (-1 < next_r < 8) or not (-1 < next_c < 8):
+            break
+        if board[next_r][next_c]["state"] == EMPTY or board[next_r][next_c]["state"] == AVAILABLE:
+            break
+        if board[next_r][next_c]["state"] == current_turn:
+            reversible_cells_in_one_dir.append(board[next_r][next_c])
+            break
+        if board[next_r][next_c]["state"] != current_turn:
+            reversible_cells_in_one_dir.append(board[next_r][next_c])
 
-    # ボード外なら終了
-    if not (-1 < next_r < 8) or not (-1 < next_c < 8):
-        break
-
-    # カラーが Green or Brown なら終了
-    if board[next_r][next_c]["state"] == EMPTY or board[next_r][next_c]["state"] == AVAILABLE:
-        break
-
-    # 同じ色ならリストに加えて（後で挟めるか判定するため）終了
-    if board[next_r][next_c]["state"] == current_turn:
-        reversible_cells_in_one_dir.append(board[next_r][next_c])
-        break
-
-    # 相手色ならリストに追加
-    if board[next_r][next_c]["state"] != current_turn:
-        reversible_cells_in_one_dir.append(board[next_r][next_c])
+    if len(reversible_cells_in_one_dir) > 0:
+        if reversible_cells_in_one_dir[-1]["state"] == current_turn:
+            reversible_cells_in_one_dir.pop()
+        else:
+            reversible_cells_in_one_dir.clear()
+    return reversible_cells_in_one_dir
 
 
-# ループ後のリストをチェック
-
-reversible_cells_in_one_dir
+get_reversible_cells_in_one_dir(board, current_turn, base_cell, dirs)
