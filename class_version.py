@@ -157,6 +157,17 @@ class GameManager(Board):
 
     # get_reversible_cells
 
+    def get_reversible_cells(self, base_cell):
+        """Get all reversible cells in all directions."""
+        reversible_cells = []
+        surrounding_cells = self.get_surrounding_cells(base_cell)
+        for cell in surrounding_cells:
+            dirs = Direction(base_cell, cell)
+            reversible_cells_in_one_dir = self.get_reversible_cells_in_one_dir(
+                base_cell, dirs)
+            reversible_cells.extend(reversible_cells_in_one_dir)
+        return reversible_cells
+
     # refresh_board
 
     # manual_selection
@@ -168,18 +179,6 @@ class GameManager(Board):
 
 gm = GameManager()
 gm.display_board()
-
-
-def get_reversible_cells(board, base_cell, current_turn):
-    """Get all reversible cells in all directions."""
-    reversible_cells = []
-    surrounding_cells = get_surrounding_cells(board, base_cell)
-    for cell in surrounding_cells:
-        dirs = get_directions(base_cell, cell)
-        reversible_cells_in_one_dir = get_reversible_cells_in_one_dir(
-            board, current_turn, base_cell, dirs)
-        reversible_cells.extend(reversible_cells_in_one_dir)
-    return reversible_cells
 
 
 def refresh_board(board, gm):
