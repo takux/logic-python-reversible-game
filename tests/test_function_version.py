@@ -155,3 +155,10 @@ def test_manual_selection(monkeypatch):
     number_inputs = StringIO('04\n')
     monkeypatch.setattr('sys.stdin', number_inputs)
     assert manual_selection() == (0, 4)
+
+
+def test_automatic_selection():
+    board = create_board()
+    refresh_board(board, gm)
+    r, c = automatic_selection(board)
+    assert board[r][c]["state"] == AVAILABLE
