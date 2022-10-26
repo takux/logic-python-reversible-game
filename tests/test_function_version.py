@@ -64,7 +64,7 @@ def test_get_directions():
     assert get_directions(board[0][0], board[1][0]) == (1, 0)
 
 
-def test_get_reversiable_cells_in_one_dir():
+def test_get_reversible_cells_in_one_dir():
     # Check the cell in the right direction
     # Row 1: [1,2,2,2,2,1,0,0]
     # Current turn color: 1
