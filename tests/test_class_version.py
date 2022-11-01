@@ -17,52 +17,52 @@ class TestBoard():
     def test_display_board(self, capfd):
         gm = GameManager()
         gm.display_board()
-        # 出力内容の検証
+        # Check output
         out, err = capfd.readouterr()
-        # 緑セルがあるかどうか
+        # Whether there is a green cell
         assert STATE_COLORS[EMPTY] in out
-        # 黄色セルがあるかどうか
+        # Whether there is a yellow cell
         assert STATE_COLORS[LIGHT] in out
-        # 青セルがあるかどうか
+        # Whether there is a blue cell
         assert STATE_COLORS[DARK] in out
 
     def test_surrounding_cells(self):
         gm = GameManager()
-        # 周囲のセルを検証
+        # Check surrounding cells
         r0c0_cells = gm.get_surrounding_cells(gm.board[0][0])
         r0c1_cells = gm.get_surrounding_cells(gm.board[0][1])
         r7c7_cells = gm.get_surrounding_cells(gm.board[7][7])
         r3c3_cells = gm.get_surrounding_cells(gm.board[3][3])
-        # 一番左上のセルの周囲のセル数
+        # Number of cells around the top-left-most cell
         assert len(r0c0_cells) == 3
-        # 左上から１つ右のセルの周囲のセル数
+        # Number of cells around the cell one right from the top left
         assert len(r0c1_cells) == 5
-        # 一番右下のセルの周囲のセル数
+        # Number of cells around the bottom right-most cell
         assert len(r7c7_cells) == 3
-        # 中央あたり[3][3]のセルの周囲のセル数
+        # Number of cells around the cell in [3][3]
         assert len(r3c3_cells) == 8
 
     def test_dirs(self):
         gm = GameManager()
-        # 右方向のセルを検証
+        # Validate cells in the right direction
         dirs = Direction(gm.board[0][0], gm.board[0][1])
         assert dirs.r_dir == 0 and dirs.c_dir == 1
-        # 右下方向のセルを検証
+        # Validate cells in the lower right direction
         dirs = Direction(gm.board[0][0], gm.board[1][1])
         assert dirs.r_dir == 1 and dirs.c_dir == 1
-        # 下方向のセルを検証
+        # Verify downward cell
         dirs = Direction(gm.board[0][0], gm.board[1][0])
         assert dirs.r_dir == 1 and dirs.c_dir == 0
 
     def test_get_reversible_cells_in_one_dir(self):
-        # 右方向のセルを検証
-        # １行目: [1,2,2,2,2,1,0,0]
-        # 現在ターンカラー: 1
-        # base_cell: 一番左上のセル
-        # directions: 右方向
+        # Validate cells in the right direction
+        # first row: [1,2,2,2,2,1,0,0]
+        # current turn color: 1
+        # base_cell: [0][0]
+        # directions: right direction
         next_turn = DARK
         gm = GameManager()
-        # １行目を設定通りにする
+        # Make the first line as configured.
         for i, cell in enumerate(gm.board[0]):
             if i == 0 or i == 5:
                 cell.state = LIGHT
@@ -75,9 +75,9 @@ class TestBoard():
         gm.current_turn = LIGHT
         reversible_cells_in_one_dir = gm.get_reversible_cells_in_one_dir(
             base_cell, dirs)
-        # 反転可能なセルの数
+        # Number of reversible cells
         assert len(reversible_cells_in_one_dir) == 4
-        # 全て現カラーと反対の色
+        # All colors are opposite to the current color
         for reversible_cell in reversible_cells_in_one_dir:
             assert reversible_cell.state == next_turn
 
@@ -95,8 +95,7 @@ class TestBoard():
         reversible_cells を正しく取得できているか検証
         """
         gm = GameManager()
-        # board = gm.board
-        # まず全て黄色にする
+        # First, turn everything yellow.
         for row in gm.board:
             for cell in row:
                 cell.state = LIGHT
@@ -118,7 +117,7 @@ class TestBoard():
 
         gm.current_turn = LIGHT
         reversible_cells = gm.get_reversible_cells(gm.board[2][2])
-        # 反転可能なセルの数
+        # Number of reversible cells
         assert len(reversible_cells) == 9
 
 
@@ -127,18 +126,16 @@ def test_refresh_board(capfd):
     gm.current_turn = LIGHT
     gm.refresh_board()
     gm.display_board()
-    """
-    # この状態を検証
-    🟩  🟩  🟩  🟩  🟩  🟩  🟩  🟩
-    🟩  🟩  🟩  🟩  🟩  🟩  🟩  🟩
-    🟩  🟩  🟩  🟩  🟫  🟩  🟩  🟩
-    🟩  🟩  🟩  🟡  🔵  🟫  🟩  🟩
-    🟩  🟩  🟫  🔵  🟡  🟩  🟩  🟩
-    🟩  🟩  🟩  🟫  🟩  🟩  🟩  🟩
-    🟩  🟩  🟩  🟩  🟩  🟩  🟩  🟩
-    🟩  🟩  🟩  🟩  🟩  🟩  🟩  🟩
-    """
-    # 茶色セルがあるかどうか
+    # Verify this condition
+    # 🟩  🟩  🟩  🟩  🟩  🟩  🟩  🟩
+    # 🟩  🟩  🟩  🟩  🟩  🟩  🟩  🟩
+    # 🟩  🟩  🟩  🟩  🟫  🟩  🟩  🟩
+    # 🟩  🟩  🟩  🟡  🔵  🟫  🟩  🟩
+    # 🟩  🟩  🟫  🔵  🟡  🟩  🟩  🟩
+    # 🟩  🟩  🟩  🟫  🟩  🟩  🟩  🟩
+    # 🟩  🟩  🟩  🟩  🟩  🟩  🟩  🟩
+    # 🟩  🟩  🟩  🟩  🟩  🟩  🟩  🟩
+    # Whether there are brown cells
     out, err = capfd.readouterr()
     assert STATE_COLORS[AVAILABLE] in out
     assert gm.board[2][4].state == AVAILABLE
