@@ -7,8 +7,6 @@
 - クラスバージョン: [class_version.py](https://github.com/takux/logic-python-reversible-game/blob/main/class_version.py)
 - クラスバージョン（ipynb）: [class_version.ipynb](https://github.com/takux/logic-python-reversible-game/blob/main/class_version.ipynb)
 
-- 定期的にクーポンを発行しているコース一覧ページは[こちら](https://www.takux.one/)。
-
 
 ## Reference Links
 
@@ -18,3 +16,9 @@
 - [Python基礎のおさらい](https://www.rabbitriver.page/ja/python-osarai)
 - [便利なショートカットキーについて](https://www.rabbitriver.page/ja/shortcutkey)
 - [本コースを制作した経緯のお話](https://note.com/takuxone/n/n72c61ac070ce)
+
+
+## About me
+
+- [クーポンを発行しているコース一覧ページ（HP）](https://www.takux.one/)。
+- [Twitter（@takuxone）](https://twitter.com/takuxone)
